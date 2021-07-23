@@ -3,6 +3,8 @@ import 'package:repertorify/modules/choose_group/choose_group_page.dart';
 import 'package:repertorify/modules/choose_group/choose_group_page_binding.dart';
 import 'package:repertorify/modules/home/home_page.dart';
 import 'package:repertorify/modules/home/home_page_binding.dart';
+import 'package:repertorify/modules/join_group_code/join_group_code_page.dart';
+import 'package:repertorify/modules/join_group_code/join_group_code_page_binding.dart';
 import 'package:repertorify/modules/login/login_page.dart';
 import 'package:repertorify/modules/login/login_page_binding.dart';
 import 'package:repertorify/modules/splash/splash_page.dart';
@@ -33,6 +35,11 @@ class AppPages {
       name: Routes.CHOOSE_GROUP,
       page: () => ChooseGroupPage(),
       binding: ChooseGroupPageBinding(),
+    ),
+    GetPage(
+      name: Routes.JOIN_GROUP_CODE,
+      page: () => JoinGroupCodePage(),
+      binding: JoinGroupCodePageBinding(),
     ),
   ];
 }

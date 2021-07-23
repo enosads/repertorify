@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:repertorify/modules/choose_group/choose_group_page.dart';
+import 'package:repertorify/shared/routes/app_pages.dart';
 import 'package:repertorify/shared/services/firebase_auth_service.dart';
 import 'package:repertorify/shared/theme/app_colors.dart';
+import 'package:repertorify/shared/utils/app_shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPageController extends GetxController {
   final logging = false.obs;
@@ -18,7 +23,8 @@ class LoginPageController extends GetxController {
   handleGoogleSignIn() async {
     FirebaseAuthService.signInWithGoogle()
         .then(_assertUserExists)
-        .then((value) => Get.to(ChooseGroupPage()))
+        .then(_saveUserToPrefs)
+        .then((value) => Get.toNamed(Routes.CHOOSE_GROUP))
         .catchError(_handleError);
   }
 
@@ -37,6 +43,7 @@ class LoginPageController extends GetxController {
         "email": firebaseAuthUser.email,
       });
     }
+    return firebaseAuthUser.uid;
   }
 
   static LoginPageController get to => Get.find();
@@ -44,5 +51,10 @@ class LoginPageController extends GetxController {
   _handleError(e) {
     Get.snackbar('Error', e.toString(),
         backgroundColor: AppColors.red, colorText: AppColors.white);
+  }
+
+  _saveUserToPrefs(value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(AppSharedPrefs.CURRENT_USER_REF, value);
   }
 }
